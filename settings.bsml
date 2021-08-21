@@ -1,0 +1,20 @@
+﻿<vertical spacing="1" horizontal-fit="PreferredSize" xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+	<increment-setting text="Decimal Places" value="decimalPlaces" integer-only="true" min="0" max="2" increment="1" apply-on-change="true"></increment-setting>
+	<increment-setting text="Average timeframe" value="averageCount" integer-only="true" min="1" max="50" increment="1" apply-on-change="true"
+		hover-hint="The amount of cuts to average this value. Each of the counters has its own average"
+	></increment-setting>
+	
+	<slider-setting text="Require preceding cut within X seconds (0 = Off)" value="ignoreCutsWithNoPrecedingWithin" min="0" max="2" increment="0.05" apply-on-change="true"
+		hover-hint="If there was no other cut with the same saber within the specified timeframe, overswing will be ignored for this cut"
+	></slider-setting>
+
+	<increment-setting text="Targeted ideal extra swing angle" value="targetExtraAngle" min="0" max="20" increment="1" apply-on-change="true"
+		hover-hint="The ideal extra swing angle that you aim for at which the counter will be white as its hard to aim for 100%"
+	></increment-setting>
+	<slider-setting text="Overswing threshold (Ideal + this)" value="upperWarning" min="5" max="30" increment="0.5" apply-on-change="true"
+		hover-hint="The number will fade towards yellow as you approach this amount above your ideal value"
+	></slider-setting>
+	<slider-setting text="Underswing threshold (Ideal - this)" value="lowerWarning" min="1" max="20" increment="0.5" apply-on-change="true"
+		hover-hint="The number will fade towards red as you approach this amount below your ideal value"
+	></slider-setting>
+</vertical>
