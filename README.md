@@ -8,7 +8,7 @@ Click on [releases](https://github.com/kinsi55/BeatSaber_OverswingCounter/releas
 
 ---
 
-### Functional principle
+### Functional principle (What do the numbers mean??)
 
 ![SS](Images/ss.jpg)
 
