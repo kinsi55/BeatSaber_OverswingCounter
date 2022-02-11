@@ -1,6 +1,6 @@
 # OverswingCounter
 
-![SS](Images/ss.jpg)
+---
 
 The Game version(s) specific releases are compatible with are mentioned in the Release title (Its obviously possible latest is not supported assuming its been released recently). If you need the plugin for an older version - Grab an older release that fits 🤯
 
@@ -9,6 +9,8 @@ The Game version(s) specific releases are compatible with are mentioned in the R
 Click on [releases](https://github.com/kinsi55/BeatSaber_OverswingCounter/releases), download the dll from the latest release and place it in your plugins folder.
 
 ### Functional principle
+
+![SS](Images/ss.jpg)
 
 ***This counter primarily focuses on the pre-swing angle, but its not just that and once you realize how it works you know why:***
 
