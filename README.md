@@ -8,6 +8,8 @@ The Game version(s) specific releases are compatible with are mentioned in the R
 
 Click on [releases](https://github.com/kinsi55/BeatSaber_OverswingCounter/releases), download the dll from the latest release and place it in your plugins folder.
 
+### Functional principle
+
 ***This counter primarily focuses on the pre-swing angle, but its not just that and once you realize how it works you know why:***
 
 - Cuts which had no other cut with the same saber within a given timespan are ignored (By default 0.6 seconds, configureable / disableable)
@@ -24,5 +26,5 @@ Either the lower values are how much you overswing on your pre-swing *coming fro
 
 Caveats:
 
-- It does not work in (New) replays, works in old ones (As much as possible anyways). I'm not sure if I'll ever be able to change that, so you probably want to record yourself playing if you want to analyze it after the fact.
+- **It does not work in (New) replays**, works in old ones (As much as possible anyways). I'm not sure if I'll ever be able to change that, so you probably want to record yourself playing if you want to analyze it after the fact.
 - The splitting of the values into Up and Down happens based off your swing angle, so for 90 degree's its kinda "random"
