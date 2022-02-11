@@ -1,12 +1,12 @@
 # OverswingCounter
 
----
-
 The Game version(s) specific releases are compatible with are mentioned in the Release title (Its obviously possible latest is not supported assuming its been released recently). If you need the plugin for an older version - Grab an older release that fits 🤯
 
 ### Install
 
 Click on [releases](https://github.com/kinsi55/BeatSaber_OverswingCounter/releases), download the dll from the latest release and place it in your plugins folder.
+
+---
 
 ### Functional principle
 
