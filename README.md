@@ -2,6 +2,12 @@
 
 ![SS](Images/ss.jpg)
 
+The Game version(s) specific releases are compatible with are mentioned in the Release title (Its obviously possible latest is not supported assuming its been released recently). If you need the plugin for an older version - Grab an older release that fits 🤯
+
+### Install
+
+Click on [releases](https://github.com/kinsi55/BeatSaber_OverswingCounter/releases), download the dll from the latest release and place it in your plugins folder.
+
 ***This counter primarily focuses on the pre-swing angle, but its not just that and once you realize how it works you know why:***
 
 - Cuts which had no other cut with the same saber within a given timespan are ignored (By default 0.6 seconds, configureable / disableable)
