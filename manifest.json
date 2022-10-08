@@ -7,9 +7,9 @@
     "description": "Counter for Counters+ that shows you how much swing angle it is that you have too much, or too little, compared to a 'perfect' swing",
     "gameVersion": "1.25.0",
     "dependsOn": {
-        "BSIPA": "^4.0.5",
-        "Counters+": "^2.2.0",
-        "BeatSaberMarkupLanguage": "^1.4.5"
+        "BSIPA": "^4.2.0",
+        "Counters+": "^2.3.0",
+        "BeatSaberMarkupLanguage": "^1.6.0"
     },
     "features": {
         "CountersPlus.CustomCounter": {
