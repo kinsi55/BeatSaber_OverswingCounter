@@ -52,7 +52,7 @@ namespace OverswingCounter {
 
 		[OnExit]
 		public void OnApplicationQuit() {
-			harmony?.UnpatchAll(harmony.Id);
+			harmony?.UnpatchSelf();
 		}
 	}
 }
