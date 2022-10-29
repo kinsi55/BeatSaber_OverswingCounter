@@ -51,7 +51,7 @@ namespace OverswingCounter.HarmonyPatches {
                     findNextBrS = false;
                 } else if (ci.opcode == OpCodes.Ldarg_S
                           && ((byte)ci.operand == 4 || (byte)ci.operand == 5)
-                          && res[i + 1].opcode == OpCodes.Brfalse) {
+                          && (res[i + 1].opcode == OpCodes.Brfalse || res[i + 1].opcode == OpCodes.Brfalse_S)) {
                     res[i + 2].MoveLabelsFrom(res[i]);
                     res.RemoveRange(i, 2);
                     findNextBrS = true;
@@ -136,7 +136,7 @@ namespace OverswingCounter.HarmonyPatches {
 		        if (ci.opcode != OpCodes.Ldarg_0
 		            || next.opcode != OpCodes.Ldfld
 		            || (next.operand != fieldRateBeforeCut && next.operand != fieldRateAfterCut)
-		            || res[i + 2].opcode != OpCodes.Brfalse) continue;
+		            || (res[i + 2].opcode != OpCodes.Brfalse && res[i + 2].opcode != OpCodes.Brfalse_S)) continue;
 
 		        res[i + 3].MoveLabelsFrom(res[i]);
 		        res.RemoveRange(i, 3);
