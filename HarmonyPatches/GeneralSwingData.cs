@@ -99,6 +99,8 @@ namespace OverswingCounter.HarmonyPatches {
 		public CutInfo lastFinishedCutToCompareAgainst { get; private set; }
 
 		public CutInfo(SaberSwingRatingCounter counter, Saber saber, NoteData.ScoringType scoringType, bool rateBefore, bool rateAfter) {
+			if (Configuration.Instance.ignoreArcsAndChains && scoringType != NoteData.ScoringType.Normal)
+				return;
 			this.counter = counter;
 			this.saber = saber;
 			saberType = saber.saberType;
@@ -125,12 +127,6 @@ namespace OverswingCounter.HarmonyPatches {
 #endif
 			counter = null;
 
-			// exclude chain elements
-			if (scoringType == NoteData.ScoringType.BurstSliderElement) {
-				beforeRating = 1f;
-				afterRating = 1f;
-			}
-			
 			/*
 			 * When you are overswinging, you are always overswinging the exact angle that you do overswing,
 			 * but underswinging is a special case where you can *theoretically* be underswinging, but in reality,

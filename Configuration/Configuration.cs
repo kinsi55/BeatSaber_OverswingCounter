@@ -17,6 +17,8 @@ namespace OverswingCounter {
 		public virtual float lowerWarning { get; set; } = 8f;
 		public virtual float upperWarning { get; set; } = 13f;
 
+		public virtual bool ignoreArcsAndChains { get; set; } = true;
+
 
 		/// <summary>
 		/// This is called whenever BSIPA reads the config from disk (including when file changes are detected).

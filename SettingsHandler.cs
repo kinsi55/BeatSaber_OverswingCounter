@@ -30,5 +30,9 @@ namespace OverswingCounter {
             get => Configuration.Instance.upperWarning;
             set => Configuration.Instance.upperWarning = value;
         }
+        public bool ignoreArcsAndChains {
+            get => Configuration.Instance.ignoreArcsAndChains;
+            set => Configuration.Instance.ignoreArcsAndChains = value;
+        }
     }
 }

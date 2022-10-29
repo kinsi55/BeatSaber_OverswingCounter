@@ -17,4 +17,5 @@
 	<slider-setting text="Underswing threshold (Ideal - this)" value="lowerWarning" min="1" max="20" increment="0.5" apply-on-change="true"
 		hover-hint="The number will fade towards red as you approach this amount below your ideal value"
 	></slider-setting>
+	<bool-setting text="Ignore Arcs and Chains" value="ignoreArcsAndChains" apply-on-change="true"></bool-setting>
 </vertical>

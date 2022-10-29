@@ -38,6 +38,8 @@ namespace OverswingCounter.HarmonyPatches {
         [HarmonyTranspiler]
         [HarmonyPriority(int.MaxValue)]
         static IEnumerable<CodeInstruction> Init_Transpiler(IEnumerable<CodeInstruction> instructions) {
+	        if (Configuration.Instance.ignoreArcsAndChains)
+		        return instructions;
             var res = instructions.ToList();
 
             var findNextBrS = false;
@@ -65,6 +67,8 @@ namespace OverswingCounter.HarmonyPatches {
         [HarmonyTranspiler]
         [HarmonyPriority(int.MaxValue)]
         static IEnumerable<CodeInstruction> ProcessNewData_Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il) {
+	        if (Configuration.Instance.ignoreArcsAndChains)
+		        return instructions;
 	        var res = instructions.ToList();
 
 	        var fieldBeforeCutRating = AccessTools.Field(typeof(SaberSwingRatingCounter), "_beforeCutRating");
@@ -154,6 +158,8 @@ namespace OverswingCounter.HarmonyPatches {
 	        bool ____rateAfterCut,
 	        ref float ____beforeCutRating,
 	        ref float ____afterCutRating) {
+	        if (Configuration.Instance.ignoreArcsAndChains)
+		        return true;
 	        if (!____rateBeforeCut)
 		        ____beforeCutRating = 1f;
 
