@@ -29,13 +29,17 @@ namespace OverswingCounter {
 				Plugin.harmony.PatchAll(Assembly.GetExecutingAssembly());
 			}
 
+			// check replay status
+			ReplayUtils.Init();
+			var isInReplay = ReplayUtils.IsInReplay();
+			
             var label = CanvasUtility.CreateTextFromSettings(Settings);
             label.text = "Overswing";
             label.fontSize = 3;
 
             TMP_Text CreateLabel(TextAlignmentOptions align, Vector3 offset) {
                 var x = CanvasUtility.CreateTextFromSettings(Settings, offset);
-                x.text = FormatDecimals(0f);
+                x.text = isInReplay ? "-" : FormatDecimals(0f);
                 x.alignment = align;
 
 				return x;

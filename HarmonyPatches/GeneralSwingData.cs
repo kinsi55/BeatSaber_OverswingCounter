@@ -99,7 +99,7 @@ namespace OverswingCounter.HarmonyPatches {
 		public CutInfo lastFinishedCutToCompareAgainst { get; private set; }
 
 		public CutInfo(SaberSwingRatingCounter counter, Saber saber, NoteData.ScoringType scoringType, bool rateBefore, bool rateAfter) {
-			if (Configuration.Instance.ignoreArcsAndChains && scoringType != NoteData.ScoringType.Normal)
+			if (ReplayUtils.lastStatus || (Configuration.Instance.ignoreArcsAndChains && scoringType != NoteData.ScoringType.Normal))
 				return;
 			this.counter = counter;
 			this.saber = saber;
