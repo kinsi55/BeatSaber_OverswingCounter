@@ -49,19 +49,23 @@
     <Reference Include="0Harmony">
       <HintPath>$(BeatSaberDir)\Libs\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="BeatmapCore">
-      <HintPath>E:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
-    </Reference>
-    <Reference Include="BSML">
-      <HintPath>E:\SteamLibrary\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
-    </Reference>
-    <Reference Include="Counters+">
-      <HintPath>E:\SteamLibrary\steamapps\common\Beat Saber\Plugins\Counters+.dll</HintPath>
-    </Reference>
-    <Reference Include="GameplayCore">
-      <HintPath>E:\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
+      <Reference Include="BSML">
+          <HintPath>$(BeatSaberDir)\Plugins\BSML.dll</HintPath>
+          <Private>false</Private>
+      </Reference>
+      <Reference Include="BeatmapCore">
+          <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
+          <Private>false</Private>
+      </Reference>
+      <Reference Include="Counters+">
+          <HintPath>$(BeatSaberDir)\Plugins\Counters+.dll</HintPath>
+          <Private>false</Private>
+      </Reference>
+      <Reference Include="GameplayCore">
+          <HintPath>$(BeatSaberDir)\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
+          <Private>false</Private>
+      </Reference>
+      <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />

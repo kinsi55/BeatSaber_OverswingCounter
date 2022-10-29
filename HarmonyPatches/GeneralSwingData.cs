@@ -25,6 +25,11 @@ namespace OverswingCounter.HarmonyPatches {
 				new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CutScoreBuffer), "_noteCutInfo")),
 				new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(NoteCutInfo), "saberType")),
 				
+				// get scoring type
+				new CodeInstruction(OpCodes.Ldarg_1),
+				new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(NoteCutInfo), "noteData")),
+				new CodeInstruction(OpCodes.Callvirt, AccessTools.PropertyGetter(typeof(NoteData), "scoringType")),
+				
 				new CodeInstruction(OpCodes.Ldloc_0), // rateBefore
 				new CodeInstruction(OpCodes.Ldloc_1), // rateAfter
 
@@ -36,13 +41,13 @@ namespace OverswingCounter.HarmonyPatches {
 
 		public static Dictionary<SaberSwingRatingCounter, CutInfo> swingRatingInfos { get; private set; } = new Dictionary<SaberSwingRatingCounter, CutInfo>();
 
-		static void PrepareNewSwingRatingCounter(SaberSwingRatingCounter counter, SaberType saberType, bool rateBefore, bool rateAfter) {
+		static void PrepareNewSwingRatingCounter(SaberSwingRatingCounter counter, SaberType saberType, NoteData.ScoringType scoringType, bool rateBefore, bool rateAfter) {
 #if TRACE
 			Console.WriteLine("GameNoteController.HandleCut => PrepareNewSwingRatingCounter()");
 #endif
 
 			if(!swingRatingInfos.TryGetValue(counter, out var existing) || existing.counter != counter)
-				swingRatingInfos[counter] = new CutInfo(counter, SaberManager.SaberForType(saberType), rateBefore, rateAfter);
+				swingRatingInfos[counter] = new CutInfo(counter, SaberManager.SaberForType(saberType), scoringType, rateBefore, rateAfter);
 		}
 
 		public static void Clear() {
@@ -69,6 +74,7 @@ namespace OverswingCounter.HarmonyPatches {
 		public SaberSwingRatingCounter counter;
 		public SaberType saberType;
 		public Saber saber;
+		public NoteData.ScoringType scoringType;
 
 		public float beforeRating = 0f;
 		public float correctedBeforeRating = 0f;
@@ -92,13 +98,14 @@ namespace OverswingCounter.HarmonyPatches {
 		public bool isPrimary { get; private set; } = false;
 		public CutInfo lastFinishedCutToCompareAgainst { get; private set; }
 
-		public CutInfo(SaberSwingRatingCounter counter, Saber saber, bool rateBefore, bool rateAfter) {
+		public CutInfo(SaberSwingRatingCounter counter, Saber saber, NoteData.ScoringType scoringType, bool rateBefore, bool rateAfter) {
 			this.counter = counter;
 			this.saber = saber;
 			saberType = saber.saberType;
 			cutTime = Time.realtimeSinceStartup;
 			this.rateBefore = rateBefore;
 			this.rateAfter = rateAfter;
+			this.scoringType = scoringType;
 			//notePosition2D = new Vector2(notePosition.x, notePosition.y);
 
 			lastFinishedCutToCompareAgainst = GeneralSwingData.lastFinishedCut[saberType];
@@ -114,12 +121,15 @@ namespace OverswingCounter.HarmonyPatches {
 			counter.UnregisterDidFinishReceiver(this);
 			swingEnd = saber.saberBladeTopPos;
 #if DEBUG
-			Console.WriteLine("Counter {0} (Primary: {5}) finished ({4})! {1:P2}pre, {2:P2}post, {3}angle (isDown: {6})", counter.GetHashCode(), beforeRating, afterRating, angle, saberType, isPrimary, isDownswing);
+			Console.WriteLine("Counter {0} (Primary: {5}) finished ({4})! {1:P2}pre, {2:P2}post, {3}angle (isDown: {6}, rateBefore: {7}, rateAfter: {8})", counter.GetHashCode(), beforeRating, afterRating, angle, saberType, isPrimary, isDownswing, rateBefore, rateAfter);
 #endif
 			counter = null;
 
-			if (!rateBefore) beforeRating = 1f;
-			if (!rateAfter) afterRating = 1f;
+			// exclude chain elements
+			if (scoringType == NoteData.ScoringType.BurstSliderElement) {
+				beforeRating = 1f;
+				afterRating = 1f;
+			}
 			
 			/*
 			 * When you are overswinging, you are always overswinging the exact angle that you do overswing,
