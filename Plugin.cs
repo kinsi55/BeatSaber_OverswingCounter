@@ -1,58 +1,52 @@
-﻿using HarmonyLib;
+﻿using System.Linq;
+using System.Reflection;
+using HarmonyLib;
 using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
-using OverswingCounter.HarmonyPatches;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+using OverswingCounter.Configuration;
+using OverswingCounter.Harmony_Patches;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using IPALogger = IPA.Logging.Logger;
 
-namespace OverswingCounter {
-	[Plugin(RuntimeOptions.SingleStartInit)]
-	public class Plugin {
-		internal static Plugin Instance { get; private set; }
-		internal static IPALogger Log { get; private set; }
-		internal static Harmony harmony = null;
+namespace OverswingCounter
+{
+    [Plugin(RuntimeOptions.SingleStartInit)]
+    public class Plugin
+    {
+        internal static Plugin Instance { get; private set; }
+        internal static IPALogger Log { get; private set; }
+        internal static Harmony Harmony;
+        internal static SaberManager SaberManager;
 
-		internal static string Name => "OverswingCounter";
-
-		[Init]
-		public void Init(IPALogger logger, IPA.Config.Config config) {
-			Configuration.Instance = config.Generated<Configuration>();
-			Instance = this;
-			Log = logger;
-		}
-
-		#region BSIPA Config
-		//Uncomment to use BSIPA's config
-		/*
         [Init]
-        public void InitWithConfig(Config conf)
+        public void Init(IPALogger logger, Config config)
         {
-            Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-            Log.Debug("Config loaded");
+            Instance = this;
+            Log = logger;
+            PluginConfig.Instance = config.Generated<PluginConfig>();
+            Harmony = new Harmony("Kinsi55.BeatSaber.OverswingCounter");
         }
-        */
-		#endregion
 
-		[OnStart]
-		public void OnApplicationStart() {
-			SceneManager.activeSceneChanged += OnActiveSceneChanged;
-		}
+        [OnEnable]
+        public void OnEnable()
+        {
+            SceneManager.activeSceneChanged += delegate(Scene oldScene, Scene newScene)
+            {
+                if (oldScene.name != "GameCore" && newScene.name != "GameCore") return;
 
-		public static void OnActiveSceneChanged(Scene oldScene, Scene newScene) {
-			if(oldScene.name == "GameCore" || newScene.name == "GameCore")
-				GeneralSwingData.Clear();
-		}
+                SaberManager = Resources.FindObjectsOfTypeAll<SaberManager>().First();
+                CutHandler.Clear();
+            };
+            
+            Harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
 
-		[OnExit]
-		public void OnApplicationQuit() {
-			harmony?.UnpatchSelf();
-		}
-	}
+        [OnDisable]
+        public void OnDisable()
+        {
+            Harmony.UnpatchSelf();
+        }
+    }
 }
