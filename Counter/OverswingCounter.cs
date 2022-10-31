@@ -7,64 +7,59 @@ using OverswingCounter.Models;
 using TMPro;
 using UnityEngine;
 
-namespace OverswingCounter.Counter
-{
-    public class OverswingCounter : BasicCustomCounter
-    {
-        private TMP_Text _counterLeftPreswingUp;
-        private TMP_Text _counterRightPreswingUp;
-        
-        private TMP_Text _counterLeftPreswingDown;
-        private TMP_Text _counterRightPreswingDown;
+namespace OverswingCounter.Counter {
+	public class OverswingCounter : BasicCustomCounter {
+		private TMP_Text _counterLeftPreswingUp;
+		private TMP_Text _counterRightPreswingUp;
 
-        private RollingAverage[] _leftValues;
-        private RollingAverage[] _rightValues;
-        
-        public override void CounterInit()
-        {
-            var label = CanvasUtility.CreateTextFromSettings(Settings);
-            label.text = "Overswing";
-            label.fontSize = 3;
+		private TMP_Text _counterLeftPreswingDown;
+		private TMP_Text _counterRightPreswingDown;
 
-            TMP_Text CreateLabel(TextAlignmentOptions align, Vector3 offset) {
-                var x = CanvasUtility.CreateTextFromSettings(Settings, offset);
-                x.text = FormatDecimals(0f);
-                x.alignment = align;
+		private RollingAverage[] _leftValues;
+		private RollingAverage[] _rightValues;
 
-                return x;
-            }
+		public override void CounterInit() {
+			var label = CanvasUtility.CreateTextFromSettings(Settings);
+			label.text = "Overswing";
+			label.fontSize = 3;
 
-            _counterRightPreswingUp = CreateLabel(TextAlignmentOptions.TopLeft, new Vector3(0.25f, -0.6f, 0));
-            _counterLeftPreswingUp = CreateLabel(TextAlignmentOptions.TopRight, new Vector3(-0.25f, -0.6f, 0));
+			TMP_Text CreateLabel(TextAlignmentOptions align, Vector3 offset) {
+				var x = CanvasUtility.CreateTextFromSettings(Settings, offset);
+				x.text = FormatDecimals(0f);
+				x.alignment = align;
 
-            _counterRightPreswingDown = CreateLabel(TextAlignmentOptions.TopLeft, new Vector3(0.25f, -0.2f, 0));
-            _counterLeftPreswingDown = CreateLabel(TextAlignmentOptions.TopRight, new Vector3(-0.25f, -0.2f, 0));
+				return x;
+			}
 
-            _leftValues = new[] {
-                new RollingAverage(Config.Instance.averageCount),
-                new RollingAverage(Config.Instance.averageCount)
-            };
+			_counterRightPreswingUp = CreateLabel(TextAlignmentOptions.TopLeft, new Vector3(0.25f, -0.6f, 0));
+			_counterLeftPreswingUp = CreateLabel(TextAlignmentOptions.TopRight, new Vector3(-0.25f, -0.6f, 0));
 
-            _rightValues = new[] {
-                new RollingAverage(Config.Instance.averageCount),
-                new RollingAverage(Config.Instance.averageCount)
-            };
+			_counterRightPreswingDown = CreateLabel(TextAlignmentOptions.TopLeft, new Vector3(0.25f, -0.2f, 0));
+			_counterLeftPreswingDown = CreateLabel(TextAlignmentOptions.TopRight, new Vector3(-0.25f, -0.2f, 0));
 
-            CutHandler.NewCutCompleted = ProcessCompletedCut;
-        }
+			_leftValues = new[] {
+				new RollingAverage(Config.Instance.averageCount),
+				new RollingAverage(Config.Instance.averageCount)
+			};
 
-        public override void CounterDestroy()
-        {
-            
-        }
-        
-        private void ProcessCompletedCut(CutInfo cut)
-        {
-            if (!cut.IsPrimary || cut.LastFinishedCutToCompareAgainst == null)
+			_rightValues = new[] {
+				new RollingAverage(Config.Instance.averageCount),
+				new RollingAverage(Config.Instance.averageCount)
+			};
+
+			CutHandler.NewCutCompleted = ProcessCompletedCut;
+		}
+
+		public override void CounterDestroy() {
+
+		}
+
+		private void ProcessCompletedCut(CutInfo cut) {
+			if(!cut.IsPrimary || cut.LastFinishedCutToCompareAgainst == null)
 				return;
 
-            var previousCutWasWithinTimeframe = 
-				Config.Instance.ignoreCutsWithNoPrecedingWithin == 0f || 
+			var previousCutWasWithinTimeframe =
+				Config.Instance.ignoreCutsWithNoPrecedingWithin == 0f ||
 				cut.CutTime - cut.LastFinishedCutToCompareAgainst.CutTime < Config.Instance.ignoreCutsWithNoPrecedingWithin;
 
 			if(!previousCutWasWithinTimeframe)
@@ -77,8 +72,7 @@ namespace OverswingCounter.Counter
 
 			var isRelatedToPreviousCut = previousCutWasWithinTimeframe && Vector2.Distance(cut.LastFinishedCutToCompareAgainst.EndPos, cut.StartPos) <= 0.4;
 
-			if (isRelatedToPreviousCut) 
-            {
+			if(isRelatedToPreviousCut) {
 				var prevPostswingExtraAngle = (cut.LastFinishedCutToCompareAgainst.AfterRating - 1) * SaberSwingRating.kAfterCutAngleFor1Rating;
 
 				/*
@@ -91,16 +85,13 @@ namespace OverswingCounter.Counter
 				Console.WriteLine("Previous cut post-swing, converted to pre swing: {0:P2}", extraPreswingAsPostswingFrac);
 #endif
 				// We wanna use whatever is lower, either the previous postswing, or our pre swing
-				if (extraPreswingAsPostswingFrac < adjustedBeforeCut) 
-                {
+				if(extraPreswingAsPostswingFrac < adjustedBeforeCut) {
 #if DEBUG
 					Console.WriteLine("Previous had a smaller effective preswing. Using that instead.");
 #endif
 					adjustedBeforeCut = extraPreswingAsPostswingFrac;
 				}
-			} 
-            else if(previousCutWasWithinTimeframe) 
-            {
+			} else if(previousCutWasWithinTimeframe) {
 #if DEBUG
 				Console.WriteLine("Previous cut with this saber was unrelated - Accounting for its postswing");
 #endif
@@ -128,34 +119,31 @@ namespace OverswingCounter.Counter
 
 			targetAvg.Add((adjustedBeforeCut - 1f) * SaberSwingRating.kBeforeCutAngleFor1Rating);
 			SetLabelValue(targetAvg, label);
-        }
-        
-        private void GetCounterAndLabel(bool leftSaber, int index, out RollingAverage avg, out TMP_Text label) {
-            avg = leftSaber ? _leftValues[index] : _rightValues[index];
-            label = leftSaber ? (index == 0 ? _counterLeftPreswingDown : _counterLeftPreswingUp) : (index == 0 ? _counterRightPreswingDown : _counterRightPreswingUp);
-        }
+		}
 
-        private void SetLabelValue(RollingAverage v, TMP_Text label) {
-            label.text = FormatDecimals((float)v.Average) + "°";
+		private void GetCounterAndLabel(bool leftSaber, int index, out RollingAverage avg, out TMP_Text label) {
+			avg = leftSaber ? _leftValues[index] : _rightValues[index];
+			label = leftSaber ? (index == 0 ? _counterLeftPreswingDown : _counterLeftPreswingUp) : (index == 0 ? _counterRightPreswingDown : _counterRightPreswingUp);
+		}
 
-            var ptsDeviation = v.Average - Config.Instance.targetExtraAngle;
+		private void SetLabelValue(RollingAverage v, TMP_Text label) {
+			label.text = FormatDecimals((float)v.Average) + "°";
 
-            var colorValue = ptsDeviation;
-            var outColor = Color.red;
+			var ptsDeviation = v.Average - Config.Instance.targetExtraAngle;
 
-            if (colorValue >= 0) 
-            {
-                colorValue /= Config.Instance.upperWarning;
-                outColor = Color.yellow;
-            } 
-            else 
-            {
-                colorValue /= -Config.Instance.lowerWarning;
-            }
+			var colorValue = ptsDeviation;
+			var outColor = Color.red;
 
-            label.color = Color.Lerp(Color.white, outColor, (float)Math.Pow(colorValue, 3));
-        }
+			if(colorValue >= 0) {
+				colorValue /= Config.Instance.upperWarning;
+				outColor = Color.yellow;
+			} else {
+				colorValue /= -Config.Instance.lowerWarning;
+			}
 
-        private string FormatDecimals(float f) => f.ToString($"F{Config.Instance.decimalPlaces}", CultureInfo.InvariantCulture);
-    }
+			label.color = Color.Lerp(Color.white, outColor, (float)Math.Pow(colorValue, 3));
+		}
+
+		private string FormatDecimals(float f) => f.ToString($"F{Config.Instance.decimalPlaces}", CultureInfo.InvariantCulture);
+	}
 }

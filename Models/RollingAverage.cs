@@ -1,34 +1,30 @@
-﻿namespace OverswingCounter.Models
-{
-    public class RollingAverage
-    {
-        private int _size = 0;
-        private int _usedSize = 0;
-        private int _currentIndex = 0;
-        private float[] _container;
-        
-        public double Average { get; private set; }
-        public double Sum { get; private set; }
+﻿namespace OverswingCounter.Models {
+	public class RollingAverage {
+		private int _size = 0;
+		private int _usedSize = 0;
+		private int _currentIndex = 0;
+		private float[] _container;
 
-        public RollingAverage(int size)
-        {
-            _size = size;
-            _container = new float[size];
-        }
+		public double Average { get; private set; }
+		public double Sum { get; private set; }
 
-        public void Add(float value)
-        {
-            if (++_currentIndex >= _size)
-                _currentIndex = 0;
+		public RollingAverage(int size) {
+			_size = size;
+			_container = new float[size];
+		}
 
-            Sum -= _container[_currentIndex];
-            _container[_currentIndex] = value;
-            Sum += value;
+		public void Add(float value) {
+			if(++_currentIndex >= _size)
+				_currentIndex = 0;
 
-            if (_usedSize < _size)
-                _usedSize++;
+			Sum -= _container[_currentIndex];
+			_container[_currentIndex] = value;
+			Sum += value;
 
-            Average = Sum / _usedSize;
-        }
-    }
+			if(_usedSize < _size)
+				_usedSize++;
+
+			Average = Sum / _usedSize;
+		}
+	}
 }
