@@ -25,7 +25,7 @@ namespace OverswingCounter.Harmony_Patches {
 		}
 
 		[HarmonyPrefix]
-		internal static void Prefix(NoteCutInfo noteCutInfo) {
+		internal static void Prefix(ref NoteCutInfo noteCutInfo) {
 			if(Config.Instance.ignoreArcsAndChains &&
 				noteCutInfo.noteData.scoringType is NoteData.ScoringType.SliderHead
 					or NoteData.ScoringType.SliderTail
