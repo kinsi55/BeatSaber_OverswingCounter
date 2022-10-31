@@ -54,12 +54,9 @@ namespace OverswingCounter.Models {
 
 				// Raycasts are somewhat expensive - Might make sense to reuse the SSRC's values with a transpiler
 				var ray = new Ray(beforeCutTopPos, afterCutTopPos - beforeCutTopPos);
-
 				_notePlane.Raycast(ray, out var distance);
-				var cutTopPos = ray.GetPoint(distance);
-				var cutBottomPos = (beforeCutBottomPos + afterCutBottomPos) * 0.5f;
 
-				var diff = cutTopPos - cutBottomPos;
+				var diff = ray.GetPoint(distance) - (beforeCutBottomPos + afterCutBottomPos) * 0.5f;
 				var overrideSegmentAngle = Vector3.Angle(diff, beforeCutTopPos - beforeCutBottomPos);
 				var angleDiff = Vector3.Angle(diff, afterCutTopPos - afterCutBottomPos);
 				_cutTime = newData.time;
@@ -101,22 +98,20 @@ namespace OverswingCounter.Models {
 			var minRequiredMovementData = 2;
 
 			rating += SaberSwingRating.BeforeCutStepRating(angleDiff, 0f);
-			CutInfo.EndPos = _data[idx].topPos;
+			CutInfo.EndPos = startElement.topPos;
 			while(time - earliestProcessedMovementData < 0.4f && minRequiredMovementData < _validCount) {
-				idx--;
-				if(idx < 0)
+				if(--idx < 0)
 					idx += len;
 				var elem = _data[idx];
 
 				var segmentNormal2 = elem.segmentNormal;
-				angleDiff = elem.segmentAngle;
 
 				var angle = Vector3.Angle(segmentNormal2, segmentNormal);
 				if(angle > 90f)
 					break;
 				CutInfo.StartPos = elem.topPos;
 
-				rating += SaberSwingRating.BeforeCutStepRating(angleDiff, angle);
+				rating += SaberSwingRating.BeforeCutStepRating(elem.segmentAngle, angle);
 				earliestProcessedMovementData = elem.time;
 				minRequiredMovementData++;
 			}
