@@ -58,8 +58,9 @@ namespace OverswingCounter.Models {
 				var cutTopPos = ray.GetPoint(distance);
 				var cutBottomPos = (beforeCutBottomPos + afterCutBottomPos) * 0.5f;
 
-				var overrideSegmentAngle = Vector3.Angle(cutTopPos - cutBottomPos, beforeCutTopPos - beforeCutBottomPos);
-				var angleDiff = Vector3.Angle(cutTopPos - cutBottomPos, afterCutTopPos - afterCutBottomPos);
+				var diff = cutTopPos - cutBottomPos;
+				var overrideSegmentAngle = Vector3.Angle(diff, beforeCutTopPos - beforeCutBottomPos);
+				var angleDiff = Vector3.Angle(diff, afterCutTopPos - afterCutBottomPos);
 				_cutTime = newData.time;
 				_notePlaneWasCut = true;
 
@@ -90,11 +91,12 @@ namespace OverswingCounter.Models {
 			if(idx < 0)
 				idx += len;
 
-			var time = _data[idx].time;
+			var startElement = _data[idx];
+			var time = startElement.time;
 			var earliestProcessedMovementData = time;
 			var rating = 0f;
-			var segmentNormal = _data[idx].segmentNormal;
-			var angleDiff = overrideSegmentAngle ? overrideValue : _data[idx].segmentAngle;
+			var segmentNormal = startElement.segmentNormal;
+			var angleDiff = overrideSegmentAngle ? overrideValue : startElement.segmentAngle;
 			var minRequiredMovementData = 2;
 
 			rating += SaberSwingRating.BeforeCutStepRating(angleDiff, 0f);
