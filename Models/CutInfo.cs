@@ -37,7 +37,6 @@ namespace OverswingCounter.Models {
 
 		public void Finish() {
 			SaberMovementData.RemoveDataProcessor(DataProcessor);
-			CutHandler.ActiveCutInfos.Remove(this);
 
 #if DEBUG
 			Plugin.Log.Info($"Finished: {BeforeRating:P2}pre {AfterRating:P2}post {Angle:F1}deg");

@@ -9,7 +9,6 @@ namespace OverswingCounter.Harmony_Patches {
 	internal static class CutHandler {
 		internal static Dictionary<SaberType, CutInfo> CurrentPrimaryCut;
 		internal static Dictionary<SaberType, CutInfo> LastFinishedCut;
-		internal static List<CutInfo> ActiveCutInfos = new(30);
 		internal static Action<CutInfo> NewCutCompleted;
 
 		internal static void Clear() {
@@ -23,7 +22,6 @@ namespace OverswingCounter.Harmony_Patches {
 				{ SaberType.SaberA, null },
 				{ SaberType.SaberB, null }
 			};
-			ActiveCutInfos.Clear();
 		}
 
 		[HarmonyPrefix]
@@ -35,7 +33,7 @@ namespace OverswingCounter.Harmony_Patches {
 					or NoteData.ScoringType.BurstSliderElement)
 				return;
 
-			ActiveCutInfos.Add(new CutInfo(noteCutInfo));
+			new CutInfo(noteCutInfo);
 		}
 	}
 }
