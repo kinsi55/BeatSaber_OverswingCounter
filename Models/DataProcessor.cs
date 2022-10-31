@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace OverswingCounter.Models {
 	public class DataProcessor : ISaberMovementDataProcessor {
-		private static FieldAccessor<SaberMovementData, int>.Accessor _validCount = FieldAccessor<SaberMovementData, int>.GetAccessor("_validCount");
-		private static FieldAccessor<SaberMovementData, BladeMovementDataElement[]>.Accessor _data = FieldAccessor<SaberMovementData, BladeMovementDataElement[]>.GetAccessor("_data");
-		private static FieldAccessor<SaberMovementData, int>.Accessor _nextAddIndex = FieldAccessor<SaberMovementData, int>.GetAccessor("_nextAddIndex");
+		private static FieldAccessor<SaberMovementData, int>.Accessor SaberMovementData_validCount = FieldAccessor<SaberMovementData, int>.GetAccessor("_validCount");
+		private static FieldAccessor<SaberMovementData, BladeMovementDataElement[]>.Accessor SaberMovementData_data = FieldAccessor<SaberMovementData, BladeMovementDataElement[]>.GetAccessor("_data");
+		private static FieldAccessor<SaberMovementData, int>.Accessor SaberMovementData_nextAddIndex = FieldAccessor<SaberMovementData, int>.GetAccessor("_nextAddIndex");
 
 		private float _cutTime;
 		private bool _notePlaneWasCut;
@@ -77,28 +77,31 @@ namespace OverswingCounter.Models {
 		// Unclamped version of SaberMovementData::ComputeSwingRating(bool, float)
 		public float ComputeSwingRating(bool overrideSegmentAngle = false, float overrideValue = 0f) {
 			var instance = CutInfo.SaberMovementData;
-			if(_validCount(ref instance) < 2)
+			var _validCount = SaberMovementData_validCount(ref instance);
+			var _data = SaberMovementData_data(ref instance);
+
+			if(_validCount < 2)
 				return 0f;
 
-			var len = _data(ref instance).Length;
-			var idx = _nextAddIndex(ref instance) - 1;
+			var len = _data.Length;
+			var idx = SaberMovementData_nextAddIndex(ref instance) - 1;
 			if(idx < 0)
 				idx += len;
 
-			var time = _data(ref instance)[idx].time;
+			var time = _data[idx].time;
 			var num3 = time; // no idea what to name this
 			var rating = 0f;
-			var segmentNormal = _data(ref instance)[idx].segmentNormal;
-			var angleDiff = overrideSegmentAngle ? overrideValue : _data(ref instance)[idx].segmentAngle;
+			var segmentNormal = _data[idx].segmentNormal;
+			var angleDiff = overrideSegmentAngle ? overrideValue : _data[idx].segmentAngle;
 			var num5 = 2; // same here
 
 			rating += SaberSwingRating.BeforeCutStepRating(angleDiff, 0f);
-			CutInfo.EndPos = _data(ref instance)[idx].topPos;
-			while(time - num3 < 0.4f && num5 < _validCount(ref instance)) {
+			CutInfo.EndPos = _data[idx].topPos;
+			while(time - num3 < 0.4f && num5 < _validCount) {
 				idx--;
 				if(idx < 0)
 					idx += len;
-				var elem = _data(ref instance)[idx];
+				var elem = _data[idx];
 
 				var segmentNormal2 = elem.segmentNormal;
 				angleDiff = elem.segmentAngle;
