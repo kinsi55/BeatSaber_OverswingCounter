@@ -30,6 +30,7 @@ namespace OverswingCounter.Models {
 			CutInfo.BeforeRating = ComputeSwingRating();
 
 			CutInfo.SaberMovementData.AddDataProcessor(this);
+			CutInfo.SaberMovementData.RequestLastDataProcessing(this);
 		}
 
 		// Stripped down, unclamped version of SaberSwingRatingCounter::ProcessNewData
