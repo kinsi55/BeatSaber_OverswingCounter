@@ -50,6 +50,8 @@ namespace OverswingCounter.Models {
 				var beforeCutBottomPos = prevData.bottomPos;
 				var afterCutTopPos = newData.topPos;
 				var afterCutBottomPos = newData.bottomPos;
+
+				// Raycasts are somewhat expensive - Might make sense to reuse the SSRC's values with a transpiler
 				var ray = new Ray(beforeCutTopPos, afterCutTopPos - beforeCutTopPos);
 
 				_notePlane.Raycast(ray, out var distance);
