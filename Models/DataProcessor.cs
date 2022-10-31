@@ -89,15 +89,15 @@ namespace OverswingCounter.Models {
 				idx += len;
 
 			var time = _data[idx].time;
-			var num3 = time; // no idea what to name this
+			var earliestProcessedMovementData = time;
 			var rating = 0f;
 			var segmentNormal = _data[idx].segmentNormal;
 			var angleDiff = overrideSegmentAngle ? overrideValue : _data[idx].segmentAngle;
-			var num5 = 2; // same here
+			var minRequiredMovementData = 2;
 
 			rating += SaberSwingRating.BeforeCutStepRating(angleDiff, 0f);
 			CutInfo.EndPos = _data[idx].topPos;
-			while(time - num3 < 0.4f && num5 < _validCount) {
+			while(time - earliestProcessedMovementData < 0.4f && minRequiredMovementData < _validCount) {
 				idx--;
 				if(idx < 0)
 					idx += len;
@@ -112,8 +112,8 @@ namespace OverswingCounter.Models {
 				CutInfo.StartPos = elem.topPos;
 
 				rating += SaberSwingRating.BeforeCutStepRating(angleDiff, angle);
-				num3 = elem.time;
-				num5++;
+				earliestProcessedMovementData = elem.time;
+				minRequiredMovementData++;
 			}
 
 			return rating;
