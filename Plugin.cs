@@ -27,19 +27,23 @@ namespace OverswingCounter {
 
 		[OnEnable]
 		public void OnEnable() {
-			SceneManager.activeSceneChanged += delegate (Scene oldScene, Scene newScene) {
-				if(oldScene.name != "GameCore" && newScene.name != "GameCore")
-					return;
-
-				SaberManager = Resources.FindObjectsOfTypeAll<SaberManager>().First();
-				CutHandler.Clear();
-			};
+			SceneManager.activeSceneChanged += SceneManager_activeSceneChanged;
 
 			Harmony.PatchAll(Assembly.GetExecutingAssembly());
 		}
 
+		private void SceneManager_activeSceneChanged(Scene oldScene, Scene newScene) {
+			if(oldScene.name != "GameCore" && newScene.name != "GameCore")
+				return;
+
+			SaberManager = Resources.FindObjectsOfTypeAll<SaberManager>().First();
+			CutHandler.Clear();
+		}
+
 		[OnDisable]
 		public void OnDisable() {
+			SceneManager.activeSceneChanged -= SceneManager_activeSceneChanged;
+
 			Harmony.UnpatchSelf();
 		}
 	}
