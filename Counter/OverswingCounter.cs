@@ -41,13 +41,13 @@ namespace OverswingCounter.Counter
             _counterLeftPreswingDown = CreateLabel(TextAlignmentOptions.TopRight, new Vector3(-0.25f, -0.2f, 0));
 
             _leftValues = new[] {
-                new RollingAverage(PluginConfig.Instance.averageCount),
-                new RollingAverage(PluginConfig.Instance.averageCount)
+                new RollingAverage(Config.Instance.averageCount),
+                new RollingAverage(Config.Instance.averageCount)
             };
 
             _rightValues = new[] {
-                new RollingAverage(PluginConfig.Instance.averageCount),
-                new RollingAverage(PluginConfig.Instance.averageCount)
+                new RollingAverage(Config.Instance.averageCount),
+                new RollingAverage(Config.Instance.averageCount)
             };
 
             CutHandler.NewCutCompleted = ProcessCompletedCut;
@@ -64,8 +64,8 @@ namespace OverswingCounter.Counter
 				return;
 
             var previousCutWasWithinTimeframe = 
-				PluginConfig.Instance.ignoreCutsWithNoPrecedingWithin == 0f || 
-				cut.CutTime - cut.LastFinishedCutToCompareAgainst.CutTime < PluginConfig.Instance.ignoreCutsWithNoPrecedingWithin;
+				Config.Instance.ignoreCutsWithNoPrecedingWithin == 0f || 
+				cut.CutTime - cut.LastFinishedCutToCompareAgainst.CutTime < Config.Instance.ignoreCutsWithNoPrecedingWithin;
 
 			if(!previousCutWasWithinTimeframe)
 				return;
@@ -138,24 +138,24 @@ namespace OverswingCounter.Counter
         private void SetLabelValue(RollingAverage v, TMP_Text label) {
             label.text = FormatDecimals((float)v.Average) + "°";
 
-            var ptsDeviation = v.Average - PluginConfig.Instance.targetExtraAngle;
+            var ptsDeviation = v.Average - Config.Instance.targetExtraAngle;
 
             var colorValue = ptsDeviation;
             var outColor = Color.red;
 
             if (colorValue >= 0) 
             {
-                colorValue /= PluginConfig.Instance.upperWarning;
+                colorValue /= Config.Instance.upperWarning;
                 outColor = Color.yellow;
             } 
             else 
             {
-                colorValue /= -PluginConfig.Instance.lowerWarning;
+                colorValue /= -Config.Instance.lowerWarning;
             }
 
             label.color = Color.Lerp(Color.white, outColor, (float)Math.Pow(colorValue, 3));
         }
 
-        private string FormatDecimals(float f) => f.ToString($"F{PluginConfig.Instance.decimalPlaces}", CultureInfo.InvariantCulture);
+        private string FormatDecimals(float f) => f.ToString($"F{Config.Instance.decimalPlaces}", CultureInfo.InvariantCulture);
     }
 }

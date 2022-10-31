@@ -6,6 +6,6 @@ namespace OverswingCounter.Counter.BSML
     internal class SettingsHandler
     {
         [UIValue("Config")]
-        public PluginConfig Config => PluginConfig.Instance;
+        public Config Config => Config.Instance;
     }
 }

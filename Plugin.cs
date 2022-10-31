@@ -2,7 +2,6 @@
 using System.Reflection;
 using HarmonyLib;
 using IPA;
-using IPA.Config;
 using IPA.Config.Stores;
 using OverswingCounter.Configuration;
 using OverswingCounter.Harmony_Patches;
@@ -21,11 +20,11 @@ namespace OverswingCounter
         internal static SaberManager SaberManager;
 
         [Init]
-        public void Init(IPALogger logger, Config config)
+        public void Init(IPALogger logger, IPA.Config.Config config)
         {
             Instance = this;
             Log = logger;
-            PluginConfig.Instance = config.Generated<PluginConfig>();
+            Config.Instance = config.Generated<Config>();
             Harmony = new Harmony("Kinsi55.BeatSaber.OverswingCounter");
         }
 

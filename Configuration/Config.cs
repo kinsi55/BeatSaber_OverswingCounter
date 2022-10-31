@@ -5,9 +5,9 @@ using IPA.Config.Stores;
 
 namespace OverswingCounter.Configuration
 {
-    internal class PluginConfig
+    internal class Config
     {
-        public static PluginConfig Instance { get; set; }
+		public static Config Instance;
         
         public virtual int averageCount { get; set; } = 12;
         public virtual int decimalPlaces { get; set; } = 0;

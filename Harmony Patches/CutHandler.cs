@@ -32,7 +32,7 @@ namespace OverswingCounter.Harmony_Patches
         [HarmonyPrefix]
         internal static void Prefix(NoteCutInfo noteCutInfo)
         {
-            if (PluginConfig.Instance.ignoreArcsAndChains &&
+            if (Config.Instance.ignoreArcsAndChains &&
                 noteCutInfo.noteData.scoringType is NoteData.ScoringType.SliderHead
                     or NoteData.ScoringType.SliderTail
                     or NoteData.ScoringType.BurstSliderHead
