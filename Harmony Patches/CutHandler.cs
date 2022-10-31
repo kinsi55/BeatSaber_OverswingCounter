@@ -9,7 +9,7 @@ namespace OverswingCounter.Harmony_Patches {
 	internal static class CutHandler {
 		internal static Dictionary<SaberType, CutInfo> CurrentPrimaryCut;
 		internal static Dictionary<SaberType, CutInfo> LastFinishedCut;
-		internal static List<CutInfo> ActiveCutInfos = new();
+		internal static List<CutInfo> ActiveCutInfos = new(30);
 		internal static Action<CutInfo> NewCutCompleted;
 
 		internal static void Clear() {
