@@ -96,25 +96,28 @@ namespace OverswingCounter.Models {
 			var segmentNormal = startElement.segmentNormal;
 			var angleDiff = overrideSegmentAngle ? overrideValue : startElement.segmentAngle;
 			var minRequiredMovementData = 2;
+			var startPos = Vector3.zero;
+			var endPos = startElement.topPos;
 
 			rating += SaberSwingRating.BeforeCutStepRating(angleDiff, 0f);
-			CutInfo.EndPos = startElement.topPos;
 			while(time - earliestProcessedMovementData < 0.4f && minRequiredMovementData < _validCount) {
 				if(--idx < 0)
 					idx += len;
 				var elem = _data[idx];
 
-				var segmentNormal2 = elem.segmentNormal;
-
-				var angle = Vector3.Angle(segmentNormal2, segmentNormal);
+				var angle = Vector3.Angle(elem.segmentNormal, segmentNormal);
 				if(angle > 90f)
 					break;
-				CutInfo.StartPos = elem.topPos;
+				startPos = elem.topPos;
 
 				rating += SaberSwingRating.BeforeCutStepRating(elem.segmentAngle, angle);
 				earliestProcessedMovementData = elem.time;
 				minRequiredMovementData++;
 			}
+
+			CutInfo.StartPos = startPos;
+			CutInfo.EndPos = endPos;
+			CutInfo.Angle = Mathf.Rad2Deg * Mathf.Atan2(endPos.y - startPos.y, endPos.x - startPos.x);
 
 			return rating;
 		}

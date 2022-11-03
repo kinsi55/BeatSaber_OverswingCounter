@@ -14,7 +14,7 @@ namespace OverswingCounter.Models {
 		public float BeforeRating;
 		public float AfterRating;
 
-		public float Angle => Mathf.Rad2Deg * Mathf.Atan2(EndPos.y - StartPos.y, EndPos.x - StartPos.x);
+		public float Angle;
 		public Vector3 StartPos;
 		public Vector3 EndPos;
 		public bool IsDownswing => Angle is <= 10f or >= 170f;
