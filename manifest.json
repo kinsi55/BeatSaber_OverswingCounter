@@ -3,7 +3,7 @@
   "id": "OverswingCounter",
   "name": "OverswingCounter",
   "author": "Kinsi55, OrdinaryTable",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Counter for Counters+ that shows you how much swing angle it is that you have too much, or too little, compared to a 'perfect' swing",
   "gameVersion": "1.25.1",
   "dependsOn": {
