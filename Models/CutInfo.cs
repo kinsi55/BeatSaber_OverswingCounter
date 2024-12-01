@@ -7,7 +7,7 @@ namespace OverswingCounter.Models {
 		public NoteCutInfo NoteCutInfo;
 		public Saber Saber;
 		public SaberType SaberType;
-		public SaberMovementData SaberMovementData => Saber.movementData;
+		public SaberMovementData SaberMovementData => Saber.movementDataForLogic;
 		public DataProcessor DataProcessor;
 		public float CutTime;
 
